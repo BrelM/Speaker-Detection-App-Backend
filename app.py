@@ -71,6 +71,8 @@ def prediction(audio_file):
     pred_decoded = encoder.inverse_transform(pred_1d)
 
     return pred_decoded
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Check if an audio file is present in the request
@@ -88,7 +90,7 @@ def predict():
     # Make prediction
     predicted_label = prediction(file.filename)
 
-    return jsonify({'predicted_label': predicted_label})
+    return jsonify({'predicted_label': str(predicted_label[0])})
 
 
 if __name__ == '__main__':
