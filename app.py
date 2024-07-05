@@ -2,6 +2,7 @@ import os
 import tempfile
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 import librosa
 import soundfile as sf
@@ -12,7 +13,7 @@ import keras
 from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
-
+CORS(app)
 
 encoder = LabelEncoder()
 encoder.fit(['Bahaouddyn', 'Belvanie', 'Brel', 'Clement', 'Danielle', 'Emeric', 'Harlette', 'Ines', 'Nahomie', 'Ngoran', 'Sasha'])
@@ -66,11 +67,14 @@ def prediction(audio_file):
     data_reshape = np.reshape(data, (data.shape[0], data.shape[1], 1))
     pred = model.predict(data_reshape, verbose=0)
     pred = np.argmax(pred, axis=1)
-    pred_1d = pred.flatten()
 
+    predicted_label_index = np.argmax(pred, axis=1)[0]
+    confidence = float(pred[0][predicted_label_index])
+    
+    pred_1d = pred.flatten()
     pred_decoded = encoder.inverse_transform(pred_1d)
 
-    return pred_decoded
+    return pred_decoded, confidence
 
 
 @app.route('/predict', methods=['POST'])
@@ -90,7 +94,7 @@ def predict():
     # Make prediction
     predicted_label = prediction(file.filename)
 
-    return jsonify({'predicted_label': str(predicted_label[0])})
+    return jsonify({'predicted_label': predicted_label})
 
 
 if __name__ == '__main__':
