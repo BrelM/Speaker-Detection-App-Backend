@@ -6,7 +6,7 @@ import tensorflow as tf
 app = Flask(__name__)
 
 # Load the TensorFlow model
-model = tf.keras.models.load_model('./modelcnn.keras')
+model = tf.keras.models.load_model('./speaker_detection_gru.h5')
 # model = tf.keras.models.load_model('speaker_detection_gru.h5')
 
 # Load the labels
