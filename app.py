@@ -66,12 +66,12 @@ def prediction(audio_file):
     data = mfcc.reshape(1, 13)
     data_reshape = np.reshape(data, (data.shape[0], data.shape[1], 1))
     pred = model.predict(data_reshape, verbose=0)
-    pred = np.argmax(pred, axis=1)
+    preds = np.argmax(pred, axis=1)
 
-    predicted_label_index = np.argmax(pred, axis=1)[0]
+    predicted_label_index = preds[0]
     confidence = float(pred[0][predicted_label_index])
-    
-    pred_1d = pred.flatten()
+
+    pred_1d = preds.flatten()
     pred_decoded = encoder.inverse_transform(pred_1d)
 
     return pred_decoded, confidence
