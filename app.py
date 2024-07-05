@@ -74,7 +74,7 @@ def prediction(audio_file):
     pred_1d = preds.flatten()
     pred_decoded = encoder.inverse_transform(pred_1d)
 
-    return pred_decoded, confidence
+    return pred_decoded[0], confidence
 
 
 @app.route('/predict', methods=['POST'])
