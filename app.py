@@ -92,9 +92,9 @@ def predict():
     file.save(file.filename)
     
     # Make prediction
-    predicted_label = prediction(file.filename)
+    predicted_label, confidence = prediction(file.filename)
 
-    return jsonify({'predicted_label': predicted_label})
+    return jsonify({'predicted_label': predicted_label, 'confidence': confidence})
 
 
 if __name__ == '__main__':
