@@ -18,8 +18,7 @@ encoder = LabelEncoder()
 encoder.fit(['Bahaouddyn', 'Belvanie', 'Brel', 'Clement', 'Danielle', 'Emeric', 'Harlette', 'Ines', 'Nahomie', 'Ngoran', 'Sasha'])
 
 # Load the TensorFlow model
-model = keras.models.load_model('./modelcnn.keras')
-# model = tf.keras.models.load_model('speaker_detection_gru.h5')
+model = tf.keras.models.load_model('speaker_detection_gru.h5')
 
 # Load the labels
 labels = {label : clss for label, clss in enumerate(open("labels.txt").read().split("\n"))}
