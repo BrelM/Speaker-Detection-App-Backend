@@ -30,7 +30,7 @@ labels = {label : clss for label, clss in enumerate(open("labels.txt").read().sp
 def convert_to_wav(filename):
     # Utiliser un fichier temporaire pour enregistrer le contenu de l'objet UploadedFile
     with tempfile.NamedTemporaryFile(delete=False, suffix='.m4a') as temp_file:
-        temp_file.write(filename.read())
+        temp_file.write(open(filename, 'rb').read())
         temp_filename = temp_file.name
 
     # Charger le fichier temporaire avec librosa
@@ -50,7 +50,11 @@ def convert_to_wav(filename):
 
 # Fonction pour l'extraction des caracteristiques
 def extract_mfcc_features(filename, n_mfcc=13):
-    audio_path = convert_to_wav(filename)
+    try:
+        audio_path = convert_to_wav(filename)
+    except:
+        pass
+
     y, sr = librosa.load(audio_path, sr=None)
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
     mfcc_mean = np.mean(mfcc.T, axis=0)
@@ -82,7 +86,7 @@ def predict():
     file.save(file.filename)
     
     # Make prediction
-    prediction = model.predict(open(file.filename, 'rb'), verbose=0)
+    prediction = model.predict(file.filename, verbose=0)
         
     return jsonify({'predicted_label': prediction})
 
