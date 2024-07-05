@@ -18,6 +18,7 @@ encoder = LabelEncoder()
 encoder.fit(['Bahaouddyn', 'Belvanie', 'Brel', 'Clement', 'Danielle', 'Emeric', 'Harlette', 'Ines', 'Nahomie', 'Ngoran', 'Sasha'])
 
 # Load the TensorFlow model
+# model = tf.keras.models.load_model('modelcnn.keras')
 model = tf.keras.models.load_model('speaker_detection_gru.h5')
 
 # Load the labels
@@ -85,10 +86,10 @@ def predict():
     file.save(file.filename)
     
     # Make prediction
-    prediction = model.predict(file.filename, verbose=0)
-        
-    return jsonify({'predicted_label': prediction})
+    predicted_label = prediction(file.filename)
+
+    return jsonify({'predicted_label': predicted_label})
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8080)
